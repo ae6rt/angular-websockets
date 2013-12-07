@@ -1,4 +1,4 @@
-package com.xoom.research;
+package org.petrovic.angws;
 
 import javax.websocket.CloseReason;
 import javax.websocket.EncodeException;

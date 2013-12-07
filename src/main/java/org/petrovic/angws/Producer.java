@@ -1,4 +1,4 @@
-package com.xoom.research;
+package org.petrovic.angws;
 
 public interface Producer {
     void produce(Object o);

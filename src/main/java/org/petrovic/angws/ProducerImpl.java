@@ -1,4 +1,4 @@
-package com.xoom.research;
+package org.petrovic.angws;
 
 import java.util.Collections;
 import java.util.Date;

@@ -1,5 +1,5 @@
 
-package com.xoom.research;
+package org.petrovic.angws;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
@@ -40,7 +40,7 @@ public class App implements Consumer {
         ServletConfiguration staticContentConfig = new ServletConfiguration.Builder()
                 .withServletClass(DefaultServlet.class)
                 .withPathSpec("/*")
-                .withInitParameter("resourceBase", "html")
+                .withInitParameter("resourceBase", "static")
                 .build();
 
         FeatherCon server = new FeatherCon.Builder()
