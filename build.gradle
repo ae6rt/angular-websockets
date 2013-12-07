@@ -1,0 +1,42 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName = "org.petrovic.angws.App"
+
+ext.versions = [
+        logback: "1.0.13",
+        guice: "3.0",
+        junit: "4.11",
+        feathercon: "2.0.1",
+        hamcrest: "1.3"
+]
+
+repositories {
+    mavenCentral()
+    maven {
+        url "http://dl.bintray.com/xoom/xoomoss"
+    }
+}
+
+dependencies {
+    compile group: "ch.qos.logback", name: "logback-classic", version: versions.logback
+    compile group: "com.xoom.oss", name: "feathercon", version: versions.feathercon
+    compile group: "com.google.inject", name: "guice", version: versions.guice
+    compile group: 'javax.inject', name: 'javax.inject', version: "1"
+
+    testCompile group: "junit", name: "junit", version: versions.junit
+    testCompile group: "org.hamcrest", name: "hamcrest-all", version: versions.hamcrest
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.9'
+}
+
+tasks.withType(Compile) {
+    options.encoding = 'UTF-8'
+}
+
+tasks.withType(Test) {
+    systemProperties = System.getProperties()
+    testLogging.showStandardStreams = true
+}
