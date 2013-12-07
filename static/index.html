@@ -1,22 +1,25 @@
 <html>
 <head>
-<!--
-    <script>
-        var ws = new WebSocket("ws://localhost:8080/events");
-        ws.onopen = function () {
-        };
-        ws.onmessage = function (evt) {
-            var received_msg = evt.data;
-            console.log("Message is received..." + received_msg);
-        };
-        ws.onclose = function () {
-            console.log("Connection is closed...");
-        };
-    </script>
--->
+    <!--
+        <script>
+            var ws = new WebSocket("ws://localhost:8080/events");
+            ws.onopen = function () {
+            };
+            ws.onmessage = function (evt) {
+                var received_msg = evt.data;
+                console.log("Message is received..." + received_msg);
+            };
+            ws.onclose = function () {
+                console.log("Connection is closed...");
+            };
+        </script>
+    -->
     <script src="js/angular.min.js"></script>
+    <script src="js/app.js"></script>
 </head>
-<body>
-<b>Test</b>
+<body ng-app="websocketApp">
+<div ng-controller="WSCtrl">
+    Message: {{message}}
+</div>
 </body>
 </html>
