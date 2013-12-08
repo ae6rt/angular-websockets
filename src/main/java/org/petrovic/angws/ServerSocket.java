@@ -37,6 +37,7 @@ public class ServerSocket implements Consumer {
 
     @Override
     public void consume(Object o) {
+        System.out.println("Socket sending " + o.toString());
         for (final Session session : sessions) {
             System.out.printf("Sending message to session %s\n", session.getId());
             try {

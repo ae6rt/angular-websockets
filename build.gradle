@@ -23,6 +23,7 @@ dependencies {
     compile group: "com.xoom.oss", name: "feathercon", version: versions.feathercon
     compile group: "com.google.inject", name: "guice", version: versions.guice
     compile group: 'javax.inject', name: 'javax.inject', version: "1"
+    compile 'com.google.code.gson:gson:2.2.2'
 
     testCompile group: "junit", name: "junit", version: versions.junit
     testCompile group: "org.hamcrest", name: "hamcrest-all", version: versions.hamcrest

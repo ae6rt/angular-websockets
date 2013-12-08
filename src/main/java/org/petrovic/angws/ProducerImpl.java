@@ -1,5 +1,7 @@
 package org.petrovic.angws;
 
+import com.google.gson.Gson;
+
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
@@ -47,12 +49,18 @@ public class ProducerImpl implements Producer {
     private class Worker implements Runnable {
         @Override
         public void run() {
-            String json = String.format("{ date: \"%s\"}", new Date().toString());
+            DateMessage m = new DateMessage();
+            m.message = new Date().toString();
+            String json = new Gson().toJson(m);
             try {
                 queue.put(json);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    public static class DateMessage {
+        public String message;
     }
 }
