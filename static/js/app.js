@@ -5,7 +5,7 @@ app.controller('controller', function ($scope, websocketService) {
 
     $scope.update = function (m) {
         $scope.msg = m;
-        $scope.$apply();
+        $scope.$apply();  // update model, driven from outside Angular event cycle
     };
 
     websocketService.start("ws://localhost:8080/events", $scope.update);
