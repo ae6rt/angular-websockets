@@ -12,9 +12,10 @@ app.controller('controller', function ($scope, websocketService) {
 });
 
 app.factory('websocketService', function () {
+        var websocket;
         return {
             start: function (url, callback) {
-                var websocket = new WebSocket(url);
+                websocket = new WebSocket(url);
                 websocket.onopen = function () {
                 };
                 websocket.onclose = function () {
@@ -22,6 +23,9 @@ app.factory('websocketService', function () {
                 websocket.onmessage = function (evt) {
                     callback(evt);
                 };
+            },
+            stop: function () {
+                websocket.close();
             }
         }
     }
