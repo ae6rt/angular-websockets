@@ -18,39 +18,40 @@ services.factory("u", function () {
     }
 });
 
-services.
-    value('websocket', {
-        socket: null,
-        listeners: [],
+services.factory("websockets", function () {
+    var listeners = [];
+    var socket = null;
+    return {
         start: function (url) {
-            this.socket = new WebSocket(url);
-            this.socket.onopen = function () {
+            socket = new WebSocket(url);
+            socket.onopen = function () {
             };
-            this.socket.onclose = function () {
+            socket.onclose = function () {
             };
-            this.socket.onmessage = (function (evt) {
-                for (i = 0; i < this.listeners.length; ++i) {
-                    this.listeners[i](evt);
+            socket.onmessage = function (evt) {
+                for (i = 0; i < listeners.length; ++i) {
+                    listeners[i](evt);
                 }
-            }).bind(this);
+            }
         },
         stop: function () {
-            this.socket.close();
+            socket.close();
         },
-        addListener: function (listener) {
-            this.listeners.push(listener);
+        addListener: function (t) {
+            listeners.push(t);
         }
-    });
+    }
+});
 
 var app = angular.module('app', ['services'])
-    .run(function (websocket) {
-        websocket.start("ws://localhost:8080/events");
+    .run(function (websockets) {
+        websockets.start("ws://localhost:8080/events");
     });
 
-app.controller('controller', function ($scope, websocket, t, u) {
+app.controller('controller', function ($scope, websockets, t, u) {
     $scope.msg = "...";
 
-    websocket.addListener(function (evt) {
+    websockets.addListener(function (evt) {
         var obj = JSON.parse(evt.data);
         $scope.$apply(function () {
             $scope.msg = obj.message
