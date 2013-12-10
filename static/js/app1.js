@@ -9,6 +9,15 @@ services.factory("t", function () {
     }
 });
 
+services.factory("u", function () {
+    var someVar = "bar";
+    return {
+        start: function () {
+            console.log("u started with someVar=" + someVar);
+        }
+    }
+});
+
 services.
     value('websocket', {
         socket: null,
@@ -38,7 +47,7 @@ var app = angular.module('app', ['services'])
         websocket.start("ws://localhost:8080/events");
     });
 
-app.controller('controller', function ($scope, websocket, t) {
+app.controller('controller', function ($scope, websocket, t, u) {
     $scope.msg = "...";
 
     websocket.addListener(function (evt) {
@@ -49,4 +58,5 @@ app.controller('controller', function ($scope, websocket, t) {
     });
 
     t.start();
+    u.start();
 });
