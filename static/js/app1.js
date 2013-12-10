@@ -11,9 +11,7 @@ uuids.factory("rfc4122", function () {
             s[14] = "4";  // bits 12-15 of the time_hi_and_version field to 0010
             s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1);  // bits 6-7 of the clock_seq_hi_and_reserved to 01
             s[8] = s[13] = s[18] = s[23] = "-";
-
-            var uuid = s.join("");
-            return uuid;
+            return s.join("");
         }
     }
 });
@@ -36,7 +34,7 @@ services.factory("u", function () {
     }
 });
 services.factory("websockets", function (rfc4122) {
-    var listeners = [];
+    var listeners = {};
     var socket = null;
     return {
         start: function (url) {
@@ -46,8 +44,10 @@ services.factory("websockets", function (rfc4122) {
             socket.onclose = function () {
             };
             socket.onmessage = function (evt) {
-                for (i = 0; i < listeners.length; ++i) {
-                    listeners[i].fn(evt);
+                for (var listener in listeners) {
+                    if (listeners.hasOwnProperty(listener)) {
+                        listeners[listener](evt);
+                    }
                 }
             }
         },
@@ -56,10 +56,11 @@ services.factory("websockets", function (rfc4122) {
         },
         addListener: function (t) {
             var uuid = rfc4122.newuuid();
-            var newListener = {uuid: uuid, fn: t}
-            listeners.push(newListener);
-            console.log("added listener " + uuid);
+            listeners[uuid] = t;
             return uuid;
+        },
+        removeListener: function (uuid) {
+            delete listeners[uuid];
         }
     }
 });
@@ -69,17 +70,13 @@ var app = angular.module('app', ['services'])
         websockets.start("ws://localhost:8080/events");
     });
 
-app.controller('controller', function ($scope, websockets, t, u) {
+app.controller('controller', function ($scope, websockets) {
     $scope.msg = "...";
 
-    var myUuid = websockets.addListener(function (evt) {
+    $scope.myUuid = websockets.addListener(function (evt) {
         var obj = JSON.parse(evt.data);
         $scope.$apply(function () {
             $scope.msg = obj.message
         });
     });
-    console.log("my uuid: " + myUuid);
-
-    t.start();
-    u.start();
 });
