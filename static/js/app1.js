@@ -1,4 +1,15 @@
-angular.module('services', []).
+var services = angular.module('services', []);
+
+services.factory("t", function () {
+    var someVar = "foo";
+    return {
+        start: function () {
+            console.log("t started with someVar=" + someVar);
+        }
+    }
+});
+
+services.
     value('websocket', {
         socket: null,
         listeners: [],
@@ -27,7 +38,7 @@ var app = angular.module('app', ['services'])
         websocket.start("ws://localhost:8080/events");
     });
 
-app.controller('controller', function ($scope, websocket) {
+app.controller('controller', function ($scope, websocket, t) {
     $scope.msg = "...";
 
     websocket.addListener(function (evt) {
@@ -36,4 +47,6 @@ app.controller('controller', function ($scope, websocket) {
             $scope.msg = obj.message
         });
     });
+
+    t.start();
 });

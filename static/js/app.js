@@ -1,6 +1,7 @@
 var app = angular.module('app', []);
 
-app.controller('controller', function ($scope, websocketService) {
+app.controller('controller', function ($scope,
+                                       websocketService) {
     $scope.msg = "...";
 
     websocketService.start("ws://localhost:8080/events", function (evt) {
