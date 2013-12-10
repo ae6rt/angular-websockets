@@ -47,7 +47,7 @@ services.factory("websockets", function (rfc4122) {
             };
             socket.onmessage = function (evt) {
                 for (i = 0; i < listeners.length; ++i) {
-                    listeners[i](evt);
+                    listeners[i].fn(evt);
                 }
             }
         },
@@ -56,8 +56,10 @@ services.factory("websockets", function (rfc4122) {
         },
         addListener: function (t) {
             var uuid = rfc4122.newuuid();
-            listeners.push(t);
+            var newListener = {uuid: uuid, fn: t}
+            listeners.push(newListener);
             console.log("added listener " + uuid);
+            return uuid;
         }
     }
 });
@@ -70,12 +72,13 @@ var app = angular.module('app', ['services'])
 app.controller('controller', function ($scope, websockets, t, u) {
     $scope.msg = "...";
 
-    websockets.addListener(function (evt) {
+    var myUuid = websockets.addListener(function (evt) {
         var obj = JSON.parse(evt.data);
         $scope.$apply(function () {
             $scope.msg = obj.message
         });
     });
+    console.log("my uuid: " + myUuid);
 
     t.start();
     u.start();
