@@ -53,6 +53,7 @@ services.factory("websockets", function (rfc4122) {
         },
         stop: function () {
             socket.close();
+            listeners = {};
         },
         addListener: function (t) {
             var uuid = rfc4122.newuuid();
