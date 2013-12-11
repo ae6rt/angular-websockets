@@ -6,6 +6,7 @@ var app = angular.module('app', ['services'])
 app.controller('controller', function ($scope, websockets) {
     $scope.msg = "...";
     $scope.listening = true;
+    $scope.label = "off";
 
     $scope.start = function () {
         $scope.myUuid = websockets.addListener(function (evt) {
@@ -14,10 +15,12 @@ app.controller('controller', function ($scope, websockets) {
                 $scope.msg = obj.message
             });
         });
+        $scope.label = "off";
     };
 
     $scope.stop = function () {
         websockets.removeListener($scope.myUuid);
+        $scope.label = "on";
     };
 
     $scope.toggle = function () {

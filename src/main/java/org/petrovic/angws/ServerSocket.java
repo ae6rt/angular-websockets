@@ -28,6 +28,8 @@ public class ServerSocket implements Consumer {
 
     @OnClose
     public void onWebSocketClose(CloseReason reason) {
+        System.out.printf("close reason: %s\n", reason.getReasonPhrase());
+        System.out.printf("close code: %d\n", reason.getCloseCode().getCode());
     }
 
     @OnError
@@ -37,9 +39,7 @@ public class ServerSocket implements Consumer {
 
     @Override
     public void consume(Object o) {
-        System.out.println("Socket sending " + o.toString());
         for (final Session session : sessions) {
-            System.out.printf("Sending message to session %s\n", session.getId());
             try {
                 session.getBasicRemote().sendObject(o.toString());
             } catch (IOException e) {

@@ -46,6 +46,9 @@ services.factory("websockets", function (rfc4122) {
             socket.onopen = function () {
             };
             socket.onclose = function () {
+                socket = null;
+                listeners = {};
+                console.log("Peer closed connection.");
             };
             socket.onmessage = function (evt) {
                 for (var listener in listeners) {
