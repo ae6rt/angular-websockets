@@ -38,6 +38,10 @@ services.factory("websockets", function (rfc4122) {
     var socket = null;
     return {
         start: function (url) {
+            if (socket != null) {
+                console.log("service is running.  stop it first.");
+                return;
+            }
             socket = new WebSocket(url);
             socket.onopen = function () {
             };
@@ -53,6 +57,7 @@ services.factory("websockets", function (rfc4122) {
         },
         stop: function () {
             socket.close();
+            socket = null;
             listeners = {};
         },
         addListener: function (t) {
